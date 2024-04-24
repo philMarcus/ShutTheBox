@@ -6,6 +6,7 @@ public class ShutTheBoxTester {
 		Game g = new Game();
 		int wins = 0;
 		final int GAMES = 100000;
+		
 		for (int i = 1; i <= GAMES; i++) {
 			g.reset();
 			g.setOptions(Game.rollDice(6, 2));

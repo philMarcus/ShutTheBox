@@ -5,14 +5,20 @@ public class Game {
 	final static int MAX = 9; // the game consists of "closing" numbers 1 - 9.
 	final String[] OPEN = { "*", "*", "*", "*", "*", "*", "*", "*", "*" };
 	final String[] CLOSED = { "N", "A", "N", "T", "U", "C", "K", "E", "T" };
+	final int numDice = 2;
+	final int diceSides = 6;
 
 	// the game board (each element starts "false", game is won if all are "true"
 	private boolean[] board;
 	private ArrayList<boolean[]> options;
-	//public static final ArrayList<boolean[]>[] ROLL_OPTS;
+	public static final ArrayList<ArrayList<boolean[]>> ROLL_OPTS= new ArrayList<ArrayList<boolean[]>>();
 
 	public Game() {
 		board = new boolean[MAX];
+
+		for (int i = 0; i<= numDice*diceSides;i++) {
+			ROLL_OPTS.add(getRollOptions(i));
+		}
 	}
 
 	public void removeOptionsWithout(int num) {
@@ -101,7 +107,7 @@ public class Game {
 					sum += n; // add n to sum if it is part of the option
 				}
 			}
-			if(sum == roll); // add if the nums add up to roll
+			if(sum == roll) // add if the nums add up to roll
 				opts.add(opt);
 		}
 		return opts;
