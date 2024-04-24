@@ -3,11 +3,11 @@ import java.util.ArrayList;
 public class ShutTheBoxTester {
 
 	public static void main(String[] args) {
-
+		Game g = new Game();
 		int wins = 0;
 		final int GAMES = 100000;
 		for (int i = 1; i <= GAMES; i++) {
-			Game g = new Game();
+			g.reset();
 			g.setOptions(Game.rollDice(6, 2));
 			while (g.getNumOpts() > 0 && !g.isWin()) {
 				//g.printOptions();

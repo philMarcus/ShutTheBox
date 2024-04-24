@@ -2,13 +2,14 @@ import java.util.ArrayList;
 
 public class Game {
 
-	final int MAX = 9; // the game consists of "closing" numbers 1 - 9.
+	final static int MAX = 9; // the game consists of "closing" numbers 1 - 9.
 	final String[] OPEN = { "*", "*", "*", "*", "*", "*", "*", "*", "*" };
 	final String[] CLOSED = { "N", "A", "N", "T", "U", "C", "K", "E", "T" };
 
 	// the game board (each element starts "false", game is won if all are "true"
 	private boolean[] board;
 	private ArrayList<boolean[]> options;
+	//public static final ArrayList<boolean[]>[] ROLL_OPTS;
 
 	public Game() {
 		board = new boolean[MAX];
@@ -47,40 +48,10 @@ public class Game {
 		removeOptionsWithout(close);
 	}
 
-	// eliminate options that don't contain the highest number found across all
-	// options
-	public void selectHighest() {
-		int high = 1;
-		// find the highest number across all options
-		for (boolean[] o : options) {
-			for (int i = 1; i <= MAX; i++) {
-				if (o[i - 1])
-					if (i > high)
-						high = i;
-			}
-		}
-		// remove options that don't contain "high"
-		removeOptionsWithout(high);
-	}
-
-	// eliminate options that don't contain the lowest number found across all
-	// options
-	public void selectLowest() {
-		int low = MAX;
-		// find the highest number across all options
-		for (boolean[] o : options) {
-			for (int i = 1; i <= MAX; i++) {
-				if (o[i - 1])
-					if (i < low)
-						low = i;
-			}
-		}
-		// remove options that don't contain "low"
-		removeOptionsWithout(low);
-	}
+	
 
 	public boolean[] makeChoice(String strategy) {
-		selectClosestTo(5);
+		selectClosestTo(9);
 		int r = (int) (Math.random() * options.size());
 		return options.get(r);
 	}
@@ -113,14 +84,33 @@ public class Game {
 		}
 		options = opts;
 	}
+	
+	public static ArrayList<boolean[]> getRollOptions(int roll){
+		ArrayList<boolean[]> opts = new ArrayList<>();
+		for (int i = 0; i < Math.pow(2, MAX); i++) {
+			boolean[] opt = new boolean[MAX];
+			int digits = i;
+			for (int n = 0; n < MAX; n++) {
+				opt[n] = (digits % 2 == 0);
+				digits /= 2;
+			}
+			// find sum of nums in option
+			int sum = 0;
+			for (int n = 1; n <= MAX; n++) {
+				if (opt[n - 1]) {
+					sum += n; // add n to sum if it is part of the option
+				}
+			}
+			if(sum == roll); // add if the nums add up to roll
+				opts.add(opt);
+		}
+		return opts;
+	}
 
 	public boolean isShut(int num) {
 		return board[num - 1];
 	}
 
-//	public void shut(int num) {
-//		board[num - 1] = true;
-//	}
 
 	public void updateBoard(boolean[] choice) {
 		board = getProspectiveBoard(choice);
@@ -146,6 +136,9 @@ public class Game {
 		return options.size();
 	}
 
+	public void reset() {
+		board = new boolean[MAX];
+	}
 	// rolls an x-sided die
 	// returns a random int between 1 and sides
 	public static int rollDie(int sides) {

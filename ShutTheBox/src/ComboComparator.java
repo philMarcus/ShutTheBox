@@ -11,6 +11,11 @@ public class ComboComparator implements Comparator<boolean[]> {
 		super();
 		this.currentBoard = currentBoard;
 	}
+	
+	private int getScore(boolean[] opt, int[] combos[]) {
+		
+		return 0;
+	}
 
 	@Override
 	public int compare(boolean[] o1, boolean[] o2) {
