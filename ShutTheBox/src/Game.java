@@ -57,36 +57,30 @@ public class Game {
 	
 
 	public boolean[] makeChoice(String strategy) {
-		selectClosestTo(9);
+		selectClosestTo(1);
 		int r = (int) (Math.random() * options.size());
 		return options.get(r);
 	}
-
-	public boolean isLegal(boolean[] opt, int roll) {
-		int sum = 0;
+	//returns true if none of the nums in the option are "shut"
+	public boolean isAvailable(boolean[] opt) {
 		for (int n = 1; n <= MAX; n++) {
-			if (opt[n - 1]) {
-				if (isShut(n))
-					return false; // illegal if the number is shut
-				else
-					sum += n; // add n to sum if it is part of the option
+			if (opt[n - 1] && isShut(n)) {
+					return false; // illegal if the number is shut (and in the option)
 			}
 		}
-		return (sum == roll); // the choice is legal if all options add up to the roll
+		return true; // all numbers have been checked, so the choice is legal 
 	}
 
 	public void setOptions(int roll) {
-		ArrayList<boolean[]> opts = new ArrayList<>();
-		for (int i = 0; i < Math.pow(2, MAX); i++) {
-			boolean[] opt = new boolean[MAX];
-			int digits = i;
-			for (int n = 0; n < MAX; n++) {
-				opt[n] = (digits % 2 == 0);
-				digits /= 2;
+		//begin with defined roll options
+		ArrayList<boolean[]> opts = (ArrayList<boolean[]>)ROLL_OPTS.get(roll).clone();
+		//remove unavailable options for this board
+		for(int i=0;i<opts.size();i++) {
+			if (!isAvailable(opts.get(i))) {
+				opts.remove(i);
+				i--;
 			}
-			// check to see if option is legal before adding
-			if (isLegal(opt, roll))
-				opts.add(opt);
+				
 		}
 		options = opts;
 	}

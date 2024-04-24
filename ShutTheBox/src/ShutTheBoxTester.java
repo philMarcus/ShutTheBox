@@ -5,7 +5,7 @@ public class ShutTheBoxTester {
 	public static void main(String[] args) {
 		Game g = new Game();
 		int wins = 0;
-		final int GAMES = 100000;
+		final int GAMES = 1000000;
 		
 		for (int i = 1; i <= GAMES; i++) {
 			g.reset();
