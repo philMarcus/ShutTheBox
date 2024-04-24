@@ -31,20 +31,20 @@ public class Game {
 		}
 	}
 	
-	// eliminate options that don't contain the digit(s) closest to 7 found across all
-	// options
-	public void selectClosestToSeven() {
-		int high = 1;
-		// find the highest number across all options
+	// eliminate options that don't contain the digit(s) closest to num found across all
+	// options. (Tie goes to highest (b/c "<=" and index increases)
+	public void selectClosestTo(int num) {
+		int close=99;
+		// TODO
 		for (boolean[] o : options) {
 			for (int i = 1; i <= MAX; i++) {
 				if (o[i - 1])
-					if (i > high)
-						high = i;
+					if (Math.abs(num - i) <= Math.abs(num - close))
+						close = i;
 			}
 		}
-		// remove options that don't contain "high"
-		removeOptionsWithout(high);
+		// remove options that don't contain "close"
+		removeOptionsWithout(close);
 	}
 
 	// eliminate options that don't contain the highest number found across all
@@ -80,7 +80,7 @@ public class Game {
 	}
 
 	public boolean[] makeChoice(String strategy) {
-		selectHighest();
+		selectClosestTo(5);
 		int r = (int) (Math.random() * options.size());
 		return options.get(r);
 	}
